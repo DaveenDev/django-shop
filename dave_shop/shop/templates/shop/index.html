@@ -4,7 +4,7 @@
 {% block page_title %}Homepage{% endblock  %}
 
 {% block page_css %}
-    <link rel="stylesheet" href="{% static "shop/styles.css" %}">
+    <link rel="stylesheet" href="{% static "shop/index.css" %}">
 {% endblock page_css %}
 
 {% block page_content %}
@@ -17,7 +17,7 @@
                 <img src="{{ product.image.url }}" alt="{{ product.title }}" class="card-img-top">
                 <div class="card-body">
                     <div class="card-title">{{ product.title }}</div>
-                    <div class="card-text">{{ product.price }}</div>
+                    <div class="card-text">${{ product.price }}</div>
                 </div>
             </div>
         </div>

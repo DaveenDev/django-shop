@@ -1,0 +1,15 @@
+
+
+.card-title{
+  font-weight: 800;
+}
+
+.card-text {
+  color: green;
+  font-weight: 600;
+}
+
+.card-img-top {
+  width: 250px;
+  height: 300px;
+}
