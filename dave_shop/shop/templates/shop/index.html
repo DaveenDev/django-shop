@@ -82,7 +82,8 @@
         } else {
             cart = JSON.parse(localStorage.getItem('cart'));
         }
-        console.log('CART: ' + cart)
+        count =Object.keys(cart).length
+        document.getElementById("cart").innerHTML = "Cart(" + count +")"
         
         $(document).on('click','.addtocart_btn', function(){
             console.log('The add button was clicked');
@@ -96,6 +97,9 @@
            console.log(cart)        
            localStorage.setItem('cart', JSON.stringify(cart));
            
+           cart_count =Object.keys(cart).length
+
+           document.getElementById("cart").innerHTML = "Cart(" + cart_count +")"
         });
     </script>
 {% endblock page_js %}
