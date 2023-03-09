@@ -20,3 +20,11 @@ def index(request):
         'products': products,
         'search_keyword': search_item
     })
+
+
+def product_detail(request, slug):
+    product = Product.objects.get(slug=slug)
+
+    return render(request, 'shop/product_detail.html', {
+        'product': product        
+    })
