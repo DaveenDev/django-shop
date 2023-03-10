@@ -28,3 +28,6 @@ def product_detail(request, slug):
     return render(request, 'shop/product_detail.html', {
         'product': product        
     })
+    
+def checkout(request):
+    return render(request, 'shop/checkout.html')

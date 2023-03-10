@@ -87,9 +87,13 @@
             var item_id = this.id.toString()
             
            if (cart[item_id] != undefined){
-                cart[item_id] = cart[item_id] +1
+                //add 1qty to existing product id on the cart
+                cart[item_id][0] += 1
            } else {
-                cart[item_id] = 1
+                //add a new entry in the localstorage
+                quantity = 1
+                name = document.getElementById('item'+item_id).innerHTML
+                cart[item_id] = [quantity,name]
            }   
          
            localStorage.setItem('cart', JSON.stringify(cart))
@@ -114,10 +118,12 @@
             var num = 1
             for (var id in cart){
                 output += num
-                output += document.getElementById('item'+id).innerHTML + " Qty: " + cart[id] + "<br>"
+                qty = cart[id][0]
+                item_name = cart[id][1]
+                output += item_name + " Qty: " + qty + "<br>"
                 num += 1
             }
-            output+="<a href='/checkout' class='btn btn-warning' id='checkout'>Checkout</a>"
+            output+="<a href='/checkout/' class='btn btn-warning' id='checkout'>Checkout</a>"
             document.getElementById('cart').setAttribute('data-content', output)
             $('#cart').popover('show')
         }
