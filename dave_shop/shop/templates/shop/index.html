@@ -33,10 +33,8 @@
                 <div class="card">              
                     <img src="{{ product.image.url }}" alt="{{ product.title }}" class="card-img-top">
                     <div class="card-body">
-                        <div class="card-title">
-                            
-                                {{ product.title }}
-                            
+                        <div class="card-title" id="item{{product.id}}" >
+                            {{ product.title }}
                         </div>
                         <div class="card-text">
                             ${{ product.price }}
@@ -86,28 +84,44 @@
         document.getElementById("cart").innerHTML = "Cart(" + count +")"
         
         $(document).on('click','.addtocart_btn', function(){
-            console.log('The add button was clicked');
-            var item_id = this.id.toString();
+            var item_id = this.id.toString()
             
            if (cart[item_id] != undefined){
-                cart[item_id] = cart[item_id] +1;
+                cart[item_id] = cart[item_id] +1
            } else {
-                cart[item_id] = 1;
+                cart[item_id] = 1
            }   
-           console.log(cart)        
-           localStorage.setItem('cart', JSON.stringify(cart));
+         
+           localStorage.setItem('cart', JSON.stringify(cart))
            
            cart_count =Object.keys(cart).length
            document.getElementById("cart").innerHTML = "Cart(" + cart_count +")"
+
+           //show cart content each add to cart button click
+           DisplayCart(cart)
         });
         
-        $(document).on('click','#cart', function(){
-            console.log("cart button was clicked")
-            
-            $('#cart').popover('show')
+        $(function () {
+            $('[data-toggle="popover"]').popover()
         })
 
-  
+        $('#cart').click(function(){
+            DisplayCart(cart)
+        })
+
+        function DisplayCart(cart){
+            var output = ""
+            var num = 1
+            for (var id in cart){
+                output += num
+                output += document.getElementById('item'+id).innerHTML + " Qty: " + cart[id] + "<br>"
+                num += 1
+            }
+            output+="<a href='/checkout' class='btn btn-warning' id='checkout'>Checkout</a>"
+            document.getElementById('cart').setAttribute('data-content', output)
+            $('#cart').popover('show')
+        }
+        
     </script>
 {% endblock page_js %}
 
