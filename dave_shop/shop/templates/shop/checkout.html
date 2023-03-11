@@ -24,8 +24,12 @@
 
     <div class="row">
       <div class="col-md-12">
-        <form>
+        <form method="POST" action="/checkout/" id='checkoutForm'>
+          {% csrf_token %}
           <div class="form-row">
+              <input type="hidden" id="items" name="items">
+              <input type="hidden" id="total_items" name="total_items">
+              <input type="hidden" id="total_amount" name="total_amount">
             <div class="form-group col-md-4">
               <label for="firstname">Firstname</label>
               <input type="text" class="form-control" id="firstname" name="firstname" placeholder="firstname">
@@ -36,7 +40,7 @@
             </div>
             <div class="form-group col-md-4">
               <label for="customer_email">Email</label>
-              <input type="email" class="form-control" id="customer_email" name="customer_email" placeholder="Email">
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email">
             </div>
           </div>
           <div class="form-group">
@@ -54,10 +58,7 @@
             </div>
             <div class="form-group col-md-4">
               <label for="state">State</label>
-              <select id="state" name="state" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
-              </select>
+              <input type="text" class="form-control" id="state" name="state">
             </div>
             <div class="form-group col-md-2">
               <label for="zip_code">Zip</label>
@@ -65,7 +66,7 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary">Place Order</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Place Order</button>
         </form>
       </div>
     </div>
@@ -83,12 +84,16 @@
   } else {
     cart = JSON.parse(localStorage.getItem('cart'))
   }
-
+  
+  var total_items =0
+  var total_amount=0
   for (var item_id in cart){
     var item_name = cart[item_id][1]
-    var qty = parseInt(cart[item_id][0])
+    var qty= parseInt(cart[item_id][0])
     var price = parseFloat(cart[item_id][2])
-    line_total = qty * price
+    var line_total = qty * price
+    total_items += qty
+    total_amount += line_total
     var list_item = "<tr>\
                     <th scope='row'>"+ item_name +"</th>\
                     <td>"+ qty +"</td>\
@@ -97,6 +102,12 @@
                     </tr>"
     $('#list_item').append(list_item)
   }
+
+  $('#items').val(JSON.stringify(cart))
+  
+  $('#total_items').val(total_items)
+  $('#total_amount').val(total_amount)
+  
 
 </script>
 {% endblock  %}

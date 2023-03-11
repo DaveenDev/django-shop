@@ -21,6 +21,9 @@ class Product(models.Model):
     image = models.ImageField(upload_to="product-images", null=True)
     slug = models.SlugField(null=True)
     
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name_plural = "Products"
     
@@ -34,16 +37,27 @@ class Customer(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     zip_code= models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.firstname + " " + self.lastname
+
     
 class Order(models.Model):
     # id -auto
-    order_date = models.DateField()
-    order_total = models.FloatField()
+    order_date = models.DateField(auto_now=True)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT,related_query_name="orders")
+    order_total = models.FloatField()
+    ordered_items = models.IntegerField(null=True)
+
+    def __str__(self):
+        return f"Order #{self.id}"
 
 class OrderItems(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_query_name="order_items")
-    item_id = models.IntegerField()
-    item_name = models.CharField(max_length=200)
-    item_price = models.FloatField()
-    item_amount = models.FloatField()
+    order =models.ForeignKey(Order, on_delete=models.CASCADE, related_query_name="order_items", null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    item_qty = models.IntegerField(default="0")
+    item_price= models.FloatField(default="0.00")
+    item_amount = models.FloatField(default="0.00")
+
+    class Meta:
+        verbose_name_plural = "Order_Items"
