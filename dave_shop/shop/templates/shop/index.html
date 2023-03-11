@@ -37,7 +37,7 @@
                             {{ product.title }}
                         </div>
                         <div class="card-text">
-                            ${{ product.price }}
+                            $<span id="price_item{{product.id}}">{{ product.price }}</span>
                         </div>
                         <a href="{% url "product-detail-page" product.slug %}" class="btn btn-warning">View</a>
                         <a class="btn btn-warning addtocart_btn" id="{{product.id}}">Add to Cart</a>
@@ -93,7 +93,8 @@
                 //add a new entry in the localstorage
                 quantity = 1
                 name = document.getElementById('item'+item_id).innerHTML
-                cart[item_id] = [quantity,name]
+                price = document.getElementById('price_item'+item_id).innerHTML
+                cart[item_id] = [quantity,name,price]
            }   
          
            localStorage.setItem('cart', JSON.stringify(cart))
@@ -110,16 +111,17 @@
         })
 
         $('#cart').click(function(){
-            DisplayCart(cart)
+            displayCart(cart)
         })
 
-        function DisplayCart(cart){
+        function displayCart(cart){
             var output = ""
             var num = 1
             for (var id in cart){
                 output += num
                 qty = cart[id][0]
                 item_name = cart[id][1]
+                price = cart[id][2]
                 output += item_name + " Qty: " + qty + "<br>"
                 num += 1
             }
